@@ -3,18 +3,17 @@ Views for handling
 Scenario, Npcs and Monster
 APIs
 """
-import sys
-
 from rest_framework import viewsets, status
 from rest_framework import mixins, generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from django.db import transaction
 from scenario.models import Scenario, Npc, Monster
 from scenario import serializers
 from campaign.models import Campaign
-from django.shortcuts import get_object_or_404
 
 
 class ScenarioViewSet(mixins.ListModelMixin,
@@ -76,6 +75,17 @@ class NpcViewSet(viewsets.ModelViewSet):
 
         return self.serializer_class
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        with transaction.atomic():
+            serializer.save()
+
+    def perform_destroy(self, instance):
+        with transaction.atomic():
+            instance.delete()
+
     @action(detail=True, methods=['get'], url_path='move_to_scenario/<int:scenario_id>')
     def move_npc_to_scenario(self, request, pk=None, scenario_id=None):
         """Adds an npc to a scenario"""
@@ -109,6 +119,17 @@ class MonsterViewSet(viewsets.ModelViewSet):
             return serializers.MonsterSerializer
 
         return self.serializer_class
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        with transaction.atomic():
+            serializer.save()
+
+    def perform_destroy(self, instance):
+        with transaction.atomic():
+            instance.delete()
 
     @action(detail=True, methods=['get'], url_path='move_to_scenario/<int:scenario_id>')
     def move_monster_to_scenario(self, request, pk=None, scenario_id=None):

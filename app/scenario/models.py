@@ -25,6 +25,9 @@ class Scenario(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        db_table = 'scenarios'
+
 
 @receiver(pre_save, sender=Scenario)
 def ensure_mutual_exclusivity(sender, instance, **kwargs):
@@ -54,6 +57,9 @@ class Npc(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = 'npcs'
+
 
 class Monster(models.Model):
     user = models.ForeignKey(
@@ -73,3 +79,6 @@ class Monster(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        db_table = 'monsters'

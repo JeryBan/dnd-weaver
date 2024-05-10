@@ -45,3 +45,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'username'
     objects = CustomUserManager()
+
+    class Meta:
+        db_table = 'users'
