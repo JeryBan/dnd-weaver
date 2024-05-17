@@ -5,14 +5,14 @@ from rest_framework import serializers
 from campaign.models import Campaign
 
 
-class CampaignSerializer(serializers.ModelSerializer):
+class CampaignListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Campaign
         fields = ['title', 'description', 'image']
 
 
-class CampaignDetailSerializer(CampaignSerializer):
+class CampaignDetailSerializer(CampaignListSerializer):
 
-    class Meta(CampaignSerializer.Meta):
-        fields = ['id', 'scenarios'] + CampaignSerializer.Meta.fields
+    class Meta(CampaignListSerializer.Meta):
+        fields = ['id', 'scenarios'] + CampaignListSerializer.Meta.fields

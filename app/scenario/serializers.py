@@ -7,7 +7,7 @@ from rest_framework import serializers
 from scenario.models import Scenario, Npc, Monster
 
 
-class ScenarioSerializer(serializers.ModelSerializer):
+class ScenarioListSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -21,34 +21,34 @@ class ScenarioSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'order', 'lvl_requirement']
 
 
-class ScenarioDetailSerializer(ScenarioSerializer):
+class ScenarioDetailSerializer(ScenarioListSerializer):
 
-    class Meta(ScenarioSerializer.Meta):
-        fields = ScenarioSerializer.Meta.fields + ['description', 'map', 'soundtrack', 'npcs', 'monsters', 'campaign']
+    class Meta(ScenarioListSerializer.Meta):
+        fields = ScenarioListSerializer.Meta.fields + ['description', 'map', 'soundtrack', 'npcs', 'monsters', 'campaign']
 
 
-class NpcSerializer(serializers.ModelSerializer):
+class NpcListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Npc
         fields = ['image']
 
 
-class NpcDetailSerializer(NpcSerializer):
+class NpcDetailSerializer(NpcListSerializer):
 
-    class Meta(NpcSerializer.Meta):
+    class Meta(NpcListSerializer.Meta):
         fields = '__all__'
 
 
-class MonsterSerializer(serializers.ModelSerializer):
+class MonsterListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Monster
         fields = ['image']
 
 
-class MonsterDetailSerializer(MonsterSerializer):
+class MonsterDetailSerializer(MonsterListSerializer):
 
-    class Meta(MonsterSerializer.Meta):
+    class Meta(MonsterListSerializer.Meta):
         fields = '__all__'
 

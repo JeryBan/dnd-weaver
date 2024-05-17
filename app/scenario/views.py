@@ -20,7 +20,7 @@ class ScenarioViewSet(mixins.ListModelMixin,
                       mixins.CreateModelMixin,
                       viewsets.GenericViewSet):
     """Viewset to handle list and create actions."""
-    serializer_class = serializers.ScenarioSerializer
+    serializer_class = serializers.ScenarioListSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Scenario.objects.all()
@@ -71,7 +71,7 @@ class NpcViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return serializers.NpcSerializer
+            return serializers.NpcListSerializer
 
         return self.serializer_class
 
@@ -116,7 +116,7 @@ class MonsterViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return serializers.MonsterSerializer
+            return serializers.MonsterListSerializer
 
         return self.serializer_class
 

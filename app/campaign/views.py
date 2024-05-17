@@ -9,7 +9,7 @@ from campaign import serializers
 
 
 class CampaignViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.CampaignSerializer
+    serializer_class = serializers.CampaignListSerializer
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     queryset = Campaign.objects.all()
@@ -21,7 +21,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return serializers.CampaignDetailSerializer
 
-        return serializers.CampaignSerializer
+        return serializers.CampaignListSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

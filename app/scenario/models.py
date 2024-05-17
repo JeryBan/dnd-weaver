@@ -4,7 +4,7 @@ from django.db.models.fields import validators
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from campaign.models import Campaign
-from core.utils import uploaded_image_filepath, uploaded_soundtrack_filepath
+from app.utils import uploaded_image_filepath, uploaded_soundtrack_filepath
 
 
 class BaseCreature:
