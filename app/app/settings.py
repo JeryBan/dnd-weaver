@@ -24,6 +24,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 IMAGE_DIR = MEDIA_ROOT / 'images'
 SOUNDTRACK_DIR = MEDIA_ROOT / 'soundtracks'
 
+STATIC_ROOT = BASE_DIR.parent / 'resources/static'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -48,10 +50,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
-    'core',
     'user',
     'campaign',
-    'scenario'
+    'scenario',
+    'queries',
+    'silk'
 ]
 
 MIDDLEWARE = [
@@ -62,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'

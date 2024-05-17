@@ -8,6 +8,15 @@ from django.contrib.auth.models import (
     PermissionsMixin)
 
 
+class TimeStampMixin(models.Model):
+    """Custom mixin for user's timestamp"""
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
 class CustomUserManager(BaseUserManager):
     """User Manager to handle new users."""
 
@@ -35,7 +44,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(username, password, **extra_fields)
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin, TimeStampMixin):
     username = models.CharField(max_length=255, blank=False, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

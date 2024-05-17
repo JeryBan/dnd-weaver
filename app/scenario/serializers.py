@@ -24,7 +24,7 @@ class ScenarioSerializer(serializers.ModelSerializer):
 class ScenarioDetailSerializer(ScenarioSerializer):
 
     class Meta(ScenarioSerializer.Meta):
-        fields = ScenarioSerializer.Meta.fields + ['description', 'map', 'soundtrack', 'npcs', 'monsters']
+        fields = ScenarioSerializer.Meta.fields + ['description', 'map', 'soundtrack', 'npcs', 'monsters', 'campaign']
 
 
 class NpcSerializer(serializers.ModelSerializer):

@@ -15,4 +15,4 @@ class CampaignSerializer(serializers.ModelSerializer):
 class CampaignDetailSerializer(CampaignSerializer):
 
     class Meta(CampaignSerializer.Meta):
-        fields = ['id'] + CampaignSerializer.Meta.fields
+        fields = ['id', 'scenarios'] + CampaignSerializer.Meta.fields

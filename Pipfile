@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+asgiref = "==3.8.1"
+attrs = "==23.2.0"
+django = "==3.2.4"
+djangorestframework = "==3.12.4"
+drf-spectacular = "==0.15.1"
+inflection = "==0.5.1"
+jsonschema = "==4.22.0"
+jsonschema-specifications = "==2023.12.1"
+pillow = "==10.3.0"
+psycopg2-binary = "==2.9.9"
+python-dotenv = "==1.0.1"
+pytz = "==2024.1"
+pyyaml = "==6.0.1"
+referencing = "==0.35.1"
+rpds-py = "==0.18.0"
+sqlparse = "==0.5.0"
+uritemplate = "==4.1.1"
+
+
+[dev-packages]
+django-silk = "*"
+
+[requires]
+python_version = "3.11"
+python_full_version = "3.11.9"

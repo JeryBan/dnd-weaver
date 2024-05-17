@@ -7,6 +7,17 @@ from campaign.models import Campaign
 from core.utils import uploaded_image_filepath, uploaded_soundtrack_filepath
 
 
+class BaseCreature:
+    """Base class for scenario creatures"""
+    name = models.CharField(max_length=255)
+    lvl = models.IntegerField(default=1, validators=[validators.MinValueValidator(1)])
+    background = models.TextField(max_length=255, null=True)
+    image = models.ImageField(upload_to=uploaded_image_filepath, null=True)
+
+    class Meta:
+        abstract = True
+
+
 class Scenario(models.Model):
     campaign = models.ForeignKey(Campaign, related_name='scenarios',
                                  on_delete=models.CASCADE)
@@ -25,6 +36,9 @@ class Scenario(models.Model):
     def __str__(self):
         return self.title
 
+    def __len__(self):
+        return Scenario.objects.count()
+
     class Meta:
         db_table = 'scenarios'
 
@@ -38,7 +52,7 @@ def ensure_mutual_exclusivity(sender, instance, **kwargs):
         instance.story_mode = False
 
 
-class Npc(models.Model):
+class Npc(models.Model, BaseCreature):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -48,20 +62,19 @@ class Npc(models.Model):
         ('elf', 'Elf'),
         ('demi-human', 'demi-Human')
     ]
-    name = models.CharField(max_length=255)
     race = models.CharField(choices=RACES, default='human', max_length=20)
-    lvl = models.IntegerField(default=1, validators=[validators.MinValueValidator(1)])
-    background = models.TextField(max_length=255, null=True)
-    image = models.ImageField(upload_to=uploaded_image_filepath, null=True)
 
     def __str__(self):
         return self.name
+
+    def __len__(self):
+        return Npc.objects.count()
 
     class Meta:
         db_table = 'npcs'
 
 
-class Monster(models.Model):
+class Monster(models.Model, BaseCreature):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -70,15 +83,17 @@ class Monster(models.Model):
         ('animal', 'Animal'),
         ('humanoid', 'Humanoid')
     ]
-    name = models.CharField(max_length=255)
     race = models.CharField(choices=RACES, default='humanoid', max_length=20)
-    lvl = models.IntegerField(default=1, validators=[validators.MinValueValidator(1)])
     gear = models.TextField(max_length=255, null=True)
     actions = models.TextField(max_length=255, null=True)
-    image = models.ImageField(upload_to=uploaded_image_filepath, null=True)
 
     def __str__(self):
         return self.name
 
+    def __len__(self):
+        return Monster.objects.count()
+
     class Meta:
         db_table = 'monsters'
+
+
