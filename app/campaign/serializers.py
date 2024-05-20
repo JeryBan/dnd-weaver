@@ -3,11 +3,11 @@ Serializers for handling campaign data.
 """
 from rest_framework import serializers, validators
 from campaign.models import Campaign
-from app.validators import FileExtentionValidator
+from app.validators import FileExtensionValidator
 
 
 class CampaignListSerializer(serializers.ModelSerializer):
-    image = serializers.FileField(validators=[FileExtentionValidator])
+    image = serializers.FileField(validators=[FileExtensionValidator])
 
     class Meta:
         model = Campaign
