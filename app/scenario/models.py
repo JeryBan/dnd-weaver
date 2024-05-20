@@ -43,15 +43,6 @@ class Scenario(models.Model):
         db_table = 'scenarios'
 
 
-@receiver(pre_save, sender=Scenario)
-def ensure_mutual_exclusivity(sender, instance, **kwargs):
-    """Ensure that a scenario can be either story or combat mode."""
-    if instance.story_mode:
-        instance.combat_mode = False
-    elif instance.combat_mode:
-        instance.story_mode = False
-
-
 class Npc(models.Model, BaseCreature):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

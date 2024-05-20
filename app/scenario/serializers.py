@@ -5,16 +5,32 @@ data
 """
 from rest_framework import serializers
 from scenario.models import Scenario, Npc, Monster
+from app.validators import FileExtentionValidator
 
 
 class ScenarioListSerializer(serializers.ModelSerializer):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         if self.context.get('story_mode'):
-            self.Meta.fields += ['story_mode']
-        else:
-            self.Meta.fields += ['combat_mode']
+            self.fields['story_mode'] = serializers.BooleanField()
+
+        if self.context.get('combat_mode'):
+            self.fields['combat_mode'] = serializers.BooleanField()
+
+    def validate(self, attrs):
+        """Ensures scenario mode can either be story or combat"""
+        if attrs.get('story_mode', False) and attrs.get('combat_mode', False):
+            raise serializers.ValidationError('mode can either be story or combat')
+
+        if attrs.get('story_mode', False):
+            attrs['combat_mode'] = False
+
+        if attrs.get('combat_mode', False):
+            attrs['story_mode'] = False
+
+        return attrs
 
     class Meta:
         model = Scenario
@@ -22,12 +38,14 @@ class ScenarioListSerializer(serializers.ModelSerializer):
 
 
 class ScenarioDetailSerializer(ScenarioListSerializer):
+    map = serializers.FileField(validators=[FileExtentionValidator])
 
     class Meta(ScenarioListSerializer.Meta):
         fields = ScenarioListSerializer.Meta.fields + ['description', 'map', 'soundtrack', 'npcs', 'monsters', 'campaign']
 
 
 class NpcListSerializer(serializers.ModelSerializer):
+    image = serializers.FileField(validators=[FileExtentionValidator])
 
     class Meta:
         model = Npc
@@ -41,6 +59,7 @@ class NpcDetailSerializer(NpcListSerializer):
 
 
 class MonsterListSerializer(serializers.ModelSerializer):
+    image = serializers.FileField(validators=[FileExtentionValidator])
 
     class Meta:
         model = Monster
