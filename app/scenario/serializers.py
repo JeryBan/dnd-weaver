@@ -5,7 +5,7 @@ data
 """
 from rest_framework import serializers
 from scenario.models import Scenario, Npc, Monster
-from app.validators import FileExtentionValidator
+from app.validators import FileExtensionValidator
 
 
 class ScenarioListSerializer(serializers.ModelSerializer):
@@ -38,14 +38,14 @@ class ScenarioListSerializer(serializers.ModelSerializer):
 
 
 class ScenarioDetailSerializer(ScenarioListSerializer):
-    map = serializers.FileField(validators=[FileExtentionValidator])
+    map = serializers.FileField(validators=[FileExtensionValidator])
 
     class Meta(ScenarioListSerializer.Meta):
         fields = ScenarioListSerializer.Meta.fields + ['description', 'map', 'soundtrack', 'npcs', 'monsters', 'campaign']
 
 
 class NpcListSerializer(serializers.ModelSerializer):
-    image = serializers.FileField(validators=[FileExtentionValidator])
+    image = serializers.FileField(validators=[FileExtensionValidator])
 
     class Meta:
         model = Npc
@@ -59,7 +59,7 @@ class NpcDetailSerializer(NpcListSerializer):
 
 
 class MonsterListSerializer(serializers.ModelSerializer):
-    image = serializers.FileField(validators=[FileExtentionValidator])
+    image = serializers.FileField(validators=[FileExtensionValidator])
 
     class Meta:
         model = Monster
