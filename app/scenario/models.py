@@ -7,8 +7,8 @@ from campaign.models import Campaign
 from app.utils import uploaded_image_filepath, uploaded_soundtrack_filepath
 
 
-class BaseCreature:
-    """Base class for scenario creatures"""
+class BaseCreatureMixin(models.Model):
+    """Base mixin for scenario creatures"""
     name = models.CharField(max_length=255)
     lvl = models.IntegerField(default=1, validators=[validators.MinValueValidator(1)])
     background = models.TextField(max_length=255, null=True)
@@ -43,7 +43,7 @@ class Scenario(models.Model):
         db_table = 'scenarios'
 
 
-class Npc(models.Model, BaseCreature):
+class Npc(BaseCreatureMixin, models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -65,7 +65,7 @@ class Npc(models.Model, BaseCreature):
         db_table = 'npcs'
 
 
-class Monster(models.Model, BaseCreature):
+class Monster(BaseCreatureMixin, models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
