@@ -30,9 +30,6 @@ urlpatterns = [
     path('', include('user.urls')),
     path('', include('campaign.urls')),
     path('', include('scenario.urls')),
-
-    # test queries
-    path('', include('queries.urls'))
 ]
 
 urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]

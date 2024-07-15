@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'user',
     'campaign',
     'scenario',
-    'queries',
     'silk'
 ]
 
