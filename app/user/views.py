@@ -36,4 +36,4 @@ class UserViewSet(viewsets.ModelViewSet):
 class PlayerReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
     authentication_classes = [authentication.TokenAuthentication]
-    queryset = get_user_model().objects.filter(is_player=True)
+    queryset = get_user_model().objects.filter(is_dm=False)

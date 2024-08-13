@@ -27,7 +27,6 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_dm'):
             extra_fields.setdefault('is_staff', True)
             extra_fields.setdefault('is_superuser', True)
-            extra_fields.setdefault('is_player', False)
 
         user = self.model(username=username, **extra_fields)
         user.set_password(password)
@@ -49,8 +48,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, TimeStampMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_dm = models.BooleanField(default=False)
-    is_player = models.BooleanField(default=True)
+    is_dm = models.BooleanField(default=True)
+
 
     USERNAME_FIELD = 'username'
     objects = CustomUserManager()
