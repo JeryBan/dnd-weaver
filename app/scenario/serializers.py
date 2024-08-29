@@ -5,7 +5,7 @@ data
 """
 from rest_framework import serializers
 from scenario.models import Scenario, Npc, Monster
-from app.validators import FileExtensionValidator
+from core.validators import FileExtensionValidator
 
 
 class ScenarioListSerializer(serializers.ModelSerializer):

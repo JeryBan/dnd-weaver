@@ -15,22 +15,14 @@ from user.serializers import AuthTokenSerializer, UserSerializer
 class CreateTokenView(ObtainAuthToken):
     serializer_class = AuthTokenSerializer
     renderer_classes = (JSONRenderer,)
+    permission_classes = (permissions.AllowAny,)
 
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     authentication_classes = [authentication.TokenAuthentication]
-
+    permission_classes = [permissions.IsAuthenticated]
     queryset = get_user_model().objects.all()
-
-    def get_permissions(self):
-        """Allow unauthorized users to create account."""
-        if self.action == 'create':
-            permission_classes = [permissions.AllowAny]
-        else:
-            permission_classes = [permissions.IsAuthenticated]
-
-        return [permission() for permission in permission_classes]
 
 
 class PlayerReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):

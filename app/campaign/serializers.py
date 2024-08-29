@@ -3,7 +3,7 @@ Serializers for handling campaign data.
 """
 from rest_framework import serializers, validators
 from campaign.models import Campaign
-from app.validators import FileExtensionValidator
+from core.validators import FileExtensionValidator
 
 
 class CampaignListSerializer(serializers.ModelSerializer):

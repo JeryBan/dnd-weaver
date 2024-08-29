@@ -15,10 +15,6 @@ class UserSerializer(serializers.ModelSerializer):
             'id': {'read_only': True}
         }
 
-    def create(self, validated_data):
-        """Create a user with encrypted password"""
-        return get_user_model().objects.create_user(**validated_data)
-
     def update(self, instance, validated_data):
         """Update a user with encrypted password"""
         password = validated_data.pop('password', None)
@@ -59,3 +55,4 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+

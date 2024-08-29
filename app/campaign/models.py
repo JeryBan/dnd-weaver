@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from app.utils import uploaded_image_filepath
+from core.utils import uploaded_image_filepath
 
 
 class Campaign(models.Model):

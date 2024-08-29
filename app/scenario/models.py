@@ -1,10 +1,9 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.db.models.fields import validators
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+
 from campaign.models import Campaign
-from app.utils import uploaded_image_filepath, uploaded_soundtrack_filepath
+from core.utils import uploaded_image_filepath, uploaded_soundtrack_filepath
 
 
 class BaseCreatureMixin(models.Model):

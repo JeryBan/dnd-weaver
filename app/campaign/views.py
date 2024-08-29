@@ -1,11 +1,11 @@
 """
 Views for handling campaign API.
 """
-from rest_framework import viewsets, status
 from rest_framework import authentication, permissions
-from rest_framework.response import Response
-from campaign.models import Campaign
+from rest_framework import viewsets
+
 from campaign import serializers
+from campaign.models import Campaign
 
 
 class CampaignViewSet(viewsets.ModelViewSet):
