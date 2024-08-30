@@ -8,40 +8,17 @@ from scenario.models import Scenario, Npc, Monster
 from core.validators import FileExtensionValidator
 
 
-class ScenarioListSerializer(serializers.ModelSerializer):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        if self.context.get('story_mode'):
-            self.fields['story_mode'] = serializers.BooleanField()
-
-        if self.context.get('combat_mode'):
-            self.fields['combat_mode'] = serializers.BooleanField()
-
-    def validate(self, attrs):
-        """Ensures scenario mode can either be story or combat"""
-        if attrs.get('story_mode', False) and attrs.get('combat_mode', False):
-            raise serializers.ValidationError('mode can either be story or combat')
-
-        if attrs.get('story_mode', False):
-            attrs['combat_mode'] = False
-
-        if attrs.get('combat_mode', False):
-            attrs['story_mode'] = False
-
-        return attrs
+class ScenarioSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(required=True)
+    description = serializers.CharField(required=False)
+    order = serializers.IntegerField(required=True)
+    lvl_requirement = serializers.IntegerField(required=False)
+    map = serializers.FileField(validators=[FileExtensionValidator], required=False)
+    soundtrack = serializers.FileField(required=False)
 
     class Meta:
         model = Scenario
-        fields = ['id', 'title', 'order', 'lvl_requirement']
-
-
-class ScenarioDetailSerializer(ScenarioListSerializer):
-    map = serializers.FileField(validators=[FileExtensionValidator])
-
-    class Meta(ScenarioListSerializer.Meta):
-        fields = ScenarioListSerializer.Meta.fields + ['description', 'map', 'soundtrack', 'npcs', 'monsters', 'campaign']
+        fields = ['id', 'title', 'order', 'lvl_requirement', 'description', 'map', 'soundtrack']
 
 
 class NpcListSerializer(serializers.ModelSerializer):

@@ -20,7 +20,7 @@ class ScenarioViewSet(mixins.ListModelMixin,
                       mixins.CreateModelMixin,
                       viewsets.GenericViewSet):
     """Viewset to handle list and create actions."""
-    serializer_class = serializers.ScenarioListSerializer
+    serializer_class = serializers.ScenarioSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Scenario.objects.all()
@@ -46,7 +46,7 @@ class ScenarioViewSet(mixins.ListModelMixin,
 
 class ScenarioModifyViewSet(generics.RetrieveUpdateDestroyAPIView):
     """Viewset to handle retrieve, update and destroy actions."""
-    serializer_class = serializers.ScenarioDetailSerializer
+    serializer_class = serializers.ScenarioSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Scenario.objects.all()

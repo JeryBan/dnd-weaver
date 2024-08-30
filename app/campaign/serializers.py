@@ -4,17 +4,16 @@ Serializers for handling campaign data.
 from rest_framework import serializers, validators
 from campaign.models import Campaign
 from core.validators import FileExtensionValidator
+from scenario.serializers import ScenarioSerializer
 
 
-class CampaignListSerializer(serializers.ModelSerializer):
-    image = serializers.FileField(validators=[FileExtensionValidator])
+class CampaignSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(required=True)
+    description = serializers.CharField(required=False)
+    image = serializers.FileField(validators=[FileExtensionValidator], required=False)
+    scenarios = ScenarioSerializer(many=True, required=False)
 
     class Meta:
         model = Campaign
-        fields = ['title', 'description', 'image']
-
-
-class CampaignDetailSerializer(CampaignListSerializer):
-
-    class Meta(CampaignListSerializer.Meta):
-        fields = ['id', 'scenarios'] + CampaignListSerializer.Meta.fields
+        fields = ['id', 'title', 'description', 'image', 'scenarios']
+        read_only_fields = ['id', 'scenarios']

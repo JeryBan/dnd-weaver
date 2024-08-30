@@ -50,9 +50,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, TimeStampMixin):
     is_superuser = models.BooleanField(default=False)
     is_dm = models.BooleanField(default=True)
 
-
     USERNAME_FIELD = 'username'
     objects = CustomUserManager()
 
     class Meta:
-        db_table = 'users'
+        db_table = 'user'
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'

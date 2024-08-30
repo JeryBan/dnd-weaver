@@ -3,34 +3,20 @@ from django.db import models
 from django.db.models.fields import validators
 
 from campaign.models import Campaign
+from core.model_mixins import BaseModelMixin
 from core.utils import uploaded_image_filepath, uploaded_soundtrack_filepath
 
 
-class BaseCreatureMixin(models.Model):
-    """Base mixin for scenario creatures"""
-    name = models.CharField(max_length=255)
-    lvl = models.IntegerField(default=1, validators=[validators.MinValueValidator(1)])
-    background = models.TextField(max_length=255, null=True)
-    image = models.ImageField(upload_to=uploaded_image_filepath, null=True)
-
-    class Meta:
-        abstract = True
-
-
-class Scenario(models.Model):
-    campaign = models.ForeignKey(Campaign, related_name='scenarios',
-                                 on_delete=models.CASCADE)
-
-    title = models.CharField(max_length=255)
-    description = models.TextField(max_length=255, null=True)
+class Scenario(BaseModelMixin):
+    title = models.CharField(max_length=255, null=False, blank=False)
+    description = models.TextField(max_length=255, blank=True, default='')
     order = models.IntegerField(default=0)
     lvl_requirement = models.IntegerField(default=1, validators=[validators.MinValueValidator(1)])
+    story_mode = models.BooleanField(default=False)
     map = models.ImageField(upload_to=uploaded_image_filepath, null=True)
     soundtrack = models.FileField(upload_to=uploaded_soundtrack_filepath, null=True)
-    story_mode = models.BooleanField(default=False)
-    combat_mode = models.BooleanField(default=False)
-    npcs = models.ManyToManyField('Npc', related_name='scenarios', blank=True)
-    monsters = models.ManyToManyField('Monster', related_name='scenarios', blank=True)
+    campaign = models.ForeignKey(Campaign, related_name='scenarios',
+                                 on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -39,20 +25,32 @@ class Scenario(models.Model):
         return Scenario.objects.count()
 
     class Meta:
-        db_table = 'scenarios'
+        db_table = 'scenario'
+        verbose_name = 'Scenario'
+        verbose_name_plural = 'Scenarios'
+        ordering = ['order']
 
 
-class Npc(BaseCreatureMixin, models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+class Npc(BaseModelMixin):
+    scenario = models.ForeignKey(
+        Scenario,
+        related_name='npcs',
+        null=True,
+        on_delete=models.PROTECT
     )
+    name = models.CharField(max_length=20, null=False, blank=False)
+    description = models.TextField(max_length=255, blank=True, default='')
     RACES = [
         ('human', 'Human'),
         ('elf', 'Elf'),
         ('demi-human', 'demi-Human')
     ]
-    race = models.CharField(choices=RACES, default='human', max_length=20)
+    race = models.CharField(choices=RACES, default='human', max_length=20, null=False)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='npcs',
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.name
@@ -61,29 +59,27 @@ class Npc(BaseCreatureMixin, models.Model):
         return Npc.objects.count()
 
     class Meta:
-        db_table = 'npcs'
+        db_table = 'npc'
+        verbose_name = 'Npc'
+        verbose_name_plural = 'Npcs'
 
 
-class Monster(BaseCreatureMixin, models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+class Monster(BaseModelMixin):
+    index = models.CharField(max_length=50, null=False, blank=False)
+    scenario = models.ForeignKey(
+        Scenario,
+        related_name='monsters',
+        null=False,
         on_delete=models.CASCADE
     )
-    RACES = [
-        ('animal', 'Animal'),
-        ('humanoid', 'Humanoid')
-    ]
-    race = models.CharField(choices=RACES, default='humanoid', max_length=20)
-    gear = models.TextField(max_length=255, null=True)
-    actions = models.TextField(max_length=255, null=True)
 
     def __str__(self):
-        return self.name
+        return self.index
 
     def __len__(self):
         return Monster.objects.count()
 
     class Meta:
-        db_table = 'monsters'
-
-
+        db_table = 'monster'
+        verbose_name = 'Monster'
+        verbose_name_plural = 'Monsters'
