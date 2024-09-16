@@ -1,15 +1,17 @@
 """
 Url mappings for campaign.
 """
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from campaign import views
+from django.urls import path
+from campaign.views import CampaignViewSet
 
 app_name = 'campaign'
-router = DefaultRouter()
-
-router.register('campaign', views.CampaignViewSet)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('campaigns/', CampaignViewSet.as_view({'get': 'list'}), name='campaigns'),
+    path('campaign/', CampaignViewSet.as_view({'post': 'create'}), name='campaign'),
+    path('campaign/<int:id>', CampaignViewSet.as_view({
+        'get': 'retrieve',
+        'patch': 'partial_update',
+        'delete': 'destroy'}
+    ), name='campaign-mod'),
 ]
