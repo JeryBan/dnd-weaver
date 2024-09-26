@@ -4,25 +4,48 @@ Serializers for handling campaign data.
 from rest_framework import serializers, validators
 from campaign.models import Campaign
 from core.validators import FileExtensionValidator
-from scenario.serializers import ScenarioSerializer
+from scenario.serializers import ScenarioRetrieveSerializer
 
 
 class CampaignSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(required=True)
-    description = serializers.CharField(required=False, allow_null=True, allow_blank=True)
-    # image = serializers.FileField(validators=[FileExtensionValidator], required=False, allow_null=True)
-    image = serializers.CharField(required=False, allow_null=True, allow_blank=True)
-    scenarios = ScenarioSerializer(many=True, required=False)
+    """
+    Campaign Serializer for List and Update actions
+    """
+    title = serializers.CharField(
+        required=False,
+        help_text='Title'
+    )
+    description = serializers.CharField(
+        required=False,
+        help_text='Description'
+    )
+    image = serializers.CharField(
+        required=False,
+        help_text='Image Path'
+    )
 
     class Meta:
         model = Campaign
-        fields = ['id', 'title', 'description', 'image', 'scenarios']
-        read_only_fields = ['id', 'scenarios']
+        fields = ('id', 'title', 'description', 'image')
+        read_only_fields = ['id']
 
 
-class CampaignCreateSerializer(serializers.ModelSerializer):
-    image = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+class CampaignRetrieveSerializer(serializers.ModelSerializer):
+    """
+    Campaign Serializer for Retrieve action
+    """
+    title = serializers.CharField(
+        required=False,
+        help_text='Title'
+    )
+    scenarios = ScenarioRetrieveSerializer(
+        many=True,
+        allow_null=True,
+        required=False
+    )
 
     class Meta:
         model = Campaign
-        fields = ['id', 'title', 'description', 'image']
+        fields = ('id', 'title', 'scenarios')
+        read_only_fields = fields
+
